@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="robots" content="noindex, nofollow">
+<title>Laurel Studio — 사전 접수</title>
+<style>
+  :root{
+    --bg:#F7F4EF; --card:#FFFFFF; --line:#E4DED2; --line2:#CFC6B4;
+    --ink:#241F17; --ink2:#5C5345; --muted:#8C8171;
+    --gold:#A8833F; --goldbg:#FBF5E8;
+    --green:#2F6B45; --greenbg:#E9F3EC;
+    --red:#B4453F; --redbg:#FBECEA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{background:var(--bg);overflow-x:hidden}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR','Segoe UI',sans-serif;
+    color:var(--ink); font-size:19px; line-height:1.65;
+    min-height:100vh; padding:env(safe-area-inset-top) 0 120px;
+  }
+  .wrap{max-width:620px;margin:0 auto;padding:0 20px}
+
+  /* ── 머리 ── */
+  .top{text-align:center;padding:26px 0 10px}
+  .top.hide + #prog{margin-top:0}
+  .brand{font-size:12px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .bar{height:6px;background:var(--line);border-radius:99px;margin:16px 0 6px;overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .3s}
+  .barlbl{font-size:14px;color:var(--muted);text-align:center;margin-bottom:18px;direction:ltr}
+
+  /* ── 카드 ── */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 22px;margin-bottom:18px}
+  h1{font-size:27px;line-height:1.4;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+  h2{font-size:24px;line-height:1.45;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
+  .sub{font-size:17px;color:var(--ink2);line-height:1.7;margin-bottom:20px}
+  .note{font-size:16px;color:var(--muted);line-height:1.7;margin-top:14px}
+
+  /* ── 큰 버튼 목록 ── */
+  .opts{display:flex;flex-direction:column;gap:11px}
+  .opt{
+    display:flex;align-items:center;gap:14px;width:100%;
+    min-height:68px;padding:16px 18px;
+    border:2px solid var(--line);border-radius:14px;background:#fff;
+    font-family:inherit;font-size:19px;line-height:1.45;color:var(--ink);
+    text-align:start;cursor:pointer;transition:border-color .12s,background .12s;
+  }
+  .opt .mark{
+    flex:0 0 28px;width:28px;height:28px;border-radius:50%;
+    border:2px solid var(--line2);background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;color:#fff;font-weight:700;
+  }
+  .opt.sq .mark{border-radius:8px}
+  .opt.on{border-color:var(--gold);background:var(--goldbg)}
+  .opt.on .mark{background:var(--gold);border-color:var(--gold)}
+  .opt.on .txt{font-weight:600}
+  .opt .txt{flex:1}
+  .opt.dk{border-style:dashed}
+  .opt.dk.on{border-style:solid}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .grid2 .opt{min-height:62px;font-size:18px}
+  .glabel{font-size:17px;font-weight:700;color:var(--ink2);margin:22px 0 10px}
+  .glabel:first-child{margin-top:0}
+
+  /* ── 입력칸 ── */
+  input[type=text],input[type=email],input[type=date],textarea{
+    width:100%;padding:17px 16px;border:2px solid var(--line);border-radius:13px;
+    background:#fff;font-family:inherit;font-size:20px;color:var(--ink);line-height:1.5;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  textarea{min-height:110px;resize:vertical}
+  .ilabel{font-size:17px;font-weight:700;margin-bottom:9px;display:block}
+  .ihint{font-size:15px;color:var(--muted);margin-top:8px;line-height:1.6}
+  .fld{margin-bottom:20px}
+  .fld:last-child{margin-bottom:0}
+
+  .match{margin-top:10px;font-size:17px;font-weight:700;min-height:26px;display:flex;align-items:center;gap:7px}
+  .match.ok{color:var(--green)}
+  .match.no{color:var(--red)}
+
+  .err{background:var(--redbg);border-inline-start:4px solid var(--red);border-radius:0 10px 10px 0;
+       padding:13px 15px;margin-top:14px;font-size:17px;color:var(--red);font-weight:600;line-height:1.6}
+
+  /* ── 안심 문구 ── */
+  .calm{background:var(--goldbg);border:2px solid #EADFC4;border-radius:16px;padding:22px 20px;margin-bottom:20px}
+  .calm > b{display:block;font-size:21px;font-weight:700;margin-bottom:10px;color:var(--ink)}
+  .calm p b{font-weight:700;color:var(--ink)}
+  .calm p{font-size:18px;line-height:1.75;color:var(--ink2);margin-bottom:9px}
+  .calm p:last-child{margin-bottom:0}
+
+  /* ── 아래 고정 단추 ── */
+  .foot{position:fixed;left:0;right:0;bottom:0;background:rgba(247,244,239,.97);
+        border-top:1px solid var(--line);padding:14px 20px calc(14px + env(safe-area-inset-bottom));
+        display:flex;gap:11px;justify-content:center;backdrop-filter:blur(6px);z-index:30}
+  .foot .in{max-width:620px;width:100%;display:flex;gap:11px}
+  .btn{flex:1;min-height:64px;border:none;border-radius:14px;font-family:inherit;
+       font-size:21px;font-weight:700;cursor:pointer;padding:0 18px}
+  .btn-next{background:var(--ink);color:#fff}
+  .btn-next[disabled]{background:#CFC9BE;color:#fff}
+  .btn-back{flex:0 0 108px;background:#fff;border:2px solid var(--line);color:var(--ink2);font-size:18px}
+
+  /* ── 언어 고르기 ── */
+  /* 첫 화면은 한 쪽(page)처럼 — 위아래 여백을 같게 두고 언어는 한가운데 */
+  body.langmode{padding:0}
+  .langpage{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;
+            padding-top:calc(env(safe-area-inset-top) + 36px);
+            padding-bottom:calc(env(safe-area-inset-bottom) + 36px)}
+  .langhead{text-align:center;margin:0 0 28px}
+  .langhead .t{font-family:Georgia,'Times New Roman',Times,serif;
+               font-size:clamp(24px,6.8vw,32px);font-weight:400;letter-spacing:.1em;
+               line-height:1.5;color:var(--ink)}
+  .langhead .u{width:46px;height:1px;background:var(--line2);margin:24px auto 0}
+  /* 책의 판권지처럼 — 맨 아래 조용히 */
+  .colophon{text-align:center;margin:28px 0 0}
+  .colophon .r{width:28px;height:1px;background:var(--line);margin:0 auto 16px}
+  .colophon .n{font-size:11px;letter-spacing:.34em;color:var(--muted);text-transform:uppercase}
+  .langgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:auto 0}
+  .langbtn{min-height:92px;border:2px solid var(--line);border-radius:16px;background:#fff;
+           font-family:inherit;cursor:pointer;padding:12px 6px;
+           display:flex;align-items:center;justify-content:center;text-align:center;
+           font-size:clamp(19px,5.4vw,25px);font-weight:700;color:var(--ink);line-height:1.25;
+           letter-spacing:.01em;word-break:keep-all;overflow-wrap:anywhere;
+           transition:border-color .12s,background .12s}
+  .langbtn:active{border-color:var(--gold);background:var(--goldbg)}
+
+  /* ── 끝인사 ── */
+  .after{background:var(--goldbg);border:2px solid #EADFC4;border-radius:16px;
+         padding:20px 18px;margin-top:20px;text-align:start}
+  .after .ah{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.5}
+  .after ul{list-style:none;padding:0;margin:0}
+  .after li{font-size:17.5px;color:var(--ink2);line-height:1.6;padding:7px 0 7px 26px;position:relative}
+  [dir=rtl] .after li{padding:7px 26px 7px 0}
+  .after li:before{content:'·';position:absolute;inset-inline-start:8px;color:var(--gold);
+                   font-size:24px;line-height:1.2;font-weight:700}
+  .trust{border:2px solid var(--line);border-radius:16px;padding:20px 18px;margin-top:14px;
+         text-align:start;font-size:17.5px;line-height:1.75;color:var(--ink2);background:#fff}
+  .trust b{color:var(--ink)}
+  .trust .see{display:block;margin-top:12px;font-size:19px;font-weight:700;color:var(--ink)}
+
+  /* ── 완료 ── */
+  .done{text-align:center;padding:14px 0}
+  .done .big{font-size:58px;margin-bottom:14px}
+  .done h1{font-size:30px}
+  .idbox{margin:22px auto 0;max-width:340px;background:var(--goldbg);
+         border:2px solid #EADFC4;border-radius:14px;padding:18px}
+  .idbox .k{font-size:13px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:700}
+  .idbox .v{font-size:25px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            color:var(--ink);margin-top:7px;word-break:break-all}
+  .idbox .n{font-size:16px;color:var(--ink2);margin-top:7px}
+  .saving{font-size:17px;color:var(--muted);margin-top:16px;min-height:26px}
+
+  [dir=rtl] .opt{text-align:right}
+  .hide{display:none !important}
+
+  @media (max-width:360px){
+    body{font-size:18px}
+    h1{font-size:24px} h2{font-size:22px}
+    .opt{font-size:18px;min-height:64px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top" id="brandTop">
+    <div class="brand">Laurel Studio</div>
+  </div>
+
+  <div id="prog" class="hide">
+    <div class="bar"><i id="barfill" style="width:0%"></i></div>
+    <div class="barlbl" id="barlbl"></div>
+  </div>
+
+  <div id="screen"></div>
+</div>
+
+<div class="foot hide" id="foot">
+  <div class="in">
+    <button class="btn btn-back hide" id="btnBack" onclick="go(-1)">←</button>
+    <button class="btn btn-next" id="btnNext" onclick="go(1)">다음</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   Laurel Studio — 사전 접수 (손님 전용)
+   이 파일에는 자가체크 질문만 들어 있습니다.
+   검색·수정·테라피스트 입력 기능은 일부러 넣지 않았습니다 —
+   손님이 주소를 어떻게 건드려도 다른 손님 기록은 나오지 않습니다.
+   ═══════════════════════════════════════════════════════════════ */
+var WEBHOOK = "https://script.google.com/macros/s/AKfycbxbdtH3LbWfvbRl1dBt3fXejg2F8QGAipewlatItWh3HgSj_MynIWEvVm-tHiTC5jCLXA/exec";
+
+var LANGS = [
+  ["ko","한국어"],   ["en","ENGLISH"],  ["es","ESPAÑOL"], ["ja","日本語"],
+  ["zh","繁體中文"], ["fr","FRANÇAIS"], ["de","DEUTSCH"], ["it","ITALIANO"],
+  ["ar","العربية"],  ["he","עברית"]
+];
+var RTL = { ar:1, he:1 };
+
+var T = {
+ko:{
+ start:"시작하기", back:"이전", next:"다음", submit:"제출하기",
+ calmTitle:"시험이 아닙니다",
+ calm1:"맞고 틀린 답은 없습니다. 편하게 답하시면 됩니다.",
+ calm2:"모르시는 건 <b>「잘 모르겠어요」</b>를 누르세요. 피부는 저희가 직접 보고 확인합니다.",
+ calm3:"신경 쓰이는 게 있으면 눌러주시고, 없으면 그냥 넘어가셔도 괜찮습니다.",
+ dk:"잘 모르겠어요", none:"해당 없음",
+ qName:"성함을 알려주세요", qNameSub:"예약하신 이름으로 적어주세요.", namePh:"이름",
+ qWhen:"언제 오시나요?", whenToday:"오늘", whenTom:"내일", whenDay:"모레", whenPick:"날짜 직접 고르기",
+ qMail:"메일 주소를 알려주세요",
+ qMailSub:"케어가 끝난 <b>당일 안에</b> 고객님 피부에 맞춘 안내를 이 주소로 보내드립니다.",
+ afterT:"케어가 끝난 당일 안에, 이 메일로 보내드립니다",
+ aList:["전문가 팁 — 오늘 본 고객님 피부 이야기","홈케어 루틴 — 아침·저녁 순서대로","한국에서 살 수 있는 맞춤 화장품 추천"],
+ trust:"저희는 <b>성분과 피부를 공부한 전문 테라피스트</b>입니다. 안심하셔도 됩니다 — 오늘 고객님의 피부 상태에 가장 좋은 선택으로만 진행합니다.", see:"예약하신 날 뵙겠습니다.",
+ mail1:"메일 주소", mail2:"한 번 더 입력해 주세요",
+ mailOk:"두 주소가 같습니다", mailNo:"두 주소가 다릅니다", mailBad:"메일 주소 형식을 확인해 주세요",
+ mailHint:"오타가 나면 안내를 못 받으시니 두 번 여쭙습니다.",
+ qWho:"알려주시면 도움이 됩니다", qWhoSub:"모르시거나 말씀하고 싶지 않으시면 넘어가셔도 됩니다.",
+ lGender:"성별", lAge:"나이대",
+ qWash:"세수하고 30분쯤 지나면 얼굴이 어떤가요?",
+ qWashSub:"오늘 아침이나 어젯밤을 떠올려 보세요.",
+ washOpts:["당기고 푸석합니다","번들거립니다","코와 이마만 번들거립니다","쉽게 빨개집니다","별다른 느낌이 없습니다"],
+ qCon:"요즘 신경 쓰이는 게 있으세요?", qConSub:"여러 개 고르셔도 됩니다. 없으면 「해당 없음」을 누르세요.",
+ qAlg:"알러지나 미리 알아야 할 게 있을까요?",
+ qAlgSub:"화장품 알러지, 복용 중인 약, 최근 시술, 임신 — 무엇이든 괜찮습니다.",
+ algNone:"없습니다", algPh:"예: 향료 알러지 / 임신 중 / 레티놀 사용 중",
+ qOk:"확인해 주세요",
+ okBody:"적어주신 내용은 <b>피부 관리 안내를 위해서만</b> 씁니다. 다른 곳에 알리지 않습니다.",
+ okAgree:"네, 동의합니다",
+ saving:"보내는 중입니다…", savedT:"감사합니다!",
+ savedB:"접수가 끝났습니다.<br>방문하시는 날 성함만 말씀해 주시면 됩니다.",
+ idLabel:"접수 번호", failT:"보내지 못했습니다",
+ failB:"인터넷 연결을 확인하고 다시 눌러주세요.", retry:"다시 보내기",
+ errName:"성함을 적어주세요", errMail:"메일 주소를 두 칸 모두 같게 적어주세요", errOk:"동의에 체크해 주세요",
+ ageOpts:["19세 미만","19-24세","25-29세","30-34세","35-39세","40-44세","45-49세","50-54세","55세 이상"],
+ genderOpts:["여성","남성","기타"],
+ skintypeOpts:["지성 (피지 과다, 번들거림)","건성 (각질, 당김, 거친 피부)","복합성 (T존 지성, 볼 건성)","민감성 (홍조, 자극)","정상 (밸런스 양호)"],
+ concernOpts:["여드름/트러블","막힌 모공/블랙헤드","칙칙하고 고르지 못한 톤","색소침착/다크스팟","홍조/자극","잔주름/노화","탄력 부족","건조함/수분 부족"]
+},
+en:{
+ start:"Start", back:"Back", next:"Next", submit:"Submit",
+ calmTitle:"This is not a test",
+ calm1:"There are no right or wrong answers. Just tell us what you notice.",
+ calm2:"If you are not sure, tap <b>“I'm not sure”</b>. We will look at your skin ourselves.",
+ calm3:"Pick anything that bothers you. If nothing does, just move on.",
+ dk:"I'm not sure", none:"None of these",
+ qName:"What is your name?", qNameSub:"Please use the name on your booking.", namePh:"Name",
+ qWhen:"When are you coming?", whenToday:"Today", whenTom:"Tomorrow", whenDay:"In 2 days", whenPick:"Choose a date",
+ qMail:"What is your email address?",
+ qMailSub:"<b>On the same day</b> as your care, we send a guide made for your skin to this address.",
+ afterT:"On the day of your care, we send all of this to your email",
+ aList:["Expert notes — what we saw in your skin today","Your home routine — morning and evening, in order","Products chosen for you that you can buy here in Korea"],
+ trust:"We are <b>therapists trained in skin and in ingredients</b>. You are in good hands — we will only choose what is best for the skin you have today.", see:"See you on the day of your booking.",
+ mail1:"Email address", mail2:"Please type it once more",
+ mailOk:"The two match", mailNo:"The two do not match", mailBad:"Please check the email format",
+ mailHint:"We ask twice because one wrong letter means the guide never arrives.",
+ qWho:"A little about you", qWhoSub:"Skip anything you'd rather not answer.",
+ lGender:"Gender", lAge:"Age group",
+ qWash:"About 30 minutes after washing, how does your face feel?",
+ qWashSub:"Think of this morning, or last night.",
+ washOpts:["Tight and flaky","Shiny all over","Shiny only on nose and forehead","Turns red easily","Nothing in particular"],
+ qCon:"Is anything bothering you lately?", qConSub:"Choose as many as you like, or tap “None of these”.",
+ qAlg:"Any allergies or anything we should know?",
+ qAlgSub:"Cosmetic allergies, medication, recent treatments, pregnancy — anything is fine.",
+ algNone:"Nothing to mention", algPh:"e.g. fragrance allergy / pregnant / using retinol",
+ qOk:"One last thing",
+ okBody:"What you wrote is used <b>only to care for your skin</b>. We do not share it.",
+ okAgree:"Yes, I agree",
+ saving:"Sending…", savedT:"Thank you!",
+ savedB:"You're all set.<br>On the day, just tell us your name.",
+ idLabel:"Reference", failT:"Could not send",
+ failB:"Please check your connection and tap again.", retry:"Send again",
+ errName:"Please enter your name", errMail:"Please type the same email in both boxes", errOk:"Please tick the box",
+ ageOpts:["Under 19","19-24","25-29","30-34","35-39","40-44","45-49","50-54","55+"],
+ genderOpts:["Female","Male","Other"],
+ skintypeOpts:["Oily (excess sebum, shine)","Dry (flaky, tight, rough)","Combination (oily T-zone, dry cheeks)","Sensitive (redness, irritation)","Normal (balanced)"],
+ concernOpts:["Acne / Breakouts","Clogged pores / Blackheads","Dull, uneven tone","Pigmentation / Dark spots","Redness / Irritation","Fine lines / Aging","Loss of firmness","Dryness / Dehydration"]
+},
+es:{
+ start:"Empezar", back:"Atrás", next:"Siguiente", submit:"Enviar",
+ calmTitle:"Esto no es un examen",
+ calm1:"No hay respuestas correctas ni incorrectas. Cuéntenos lo que nota.",
+ calm2:"Si no está segura, pulse <b>«No lo sé»</b>. Su piel la examinamos nosotras.",
+ calm3:"Marque lo que le preocupe. Si no le preocupa nada, puede continuar.",
+ dk:"No lo sé", none:"Ninguna",
+ qName:"¿Cómo se llama?", qNameSub:"Use el nombre de su reserva.", namePh:"Nombre",
+ qWhen:"¿Qué día viene?", whenToday:"Hoy", whenTom:"Mañana", whenDay:"Pasado mañana", whenPick:"Elegir fecha",
+ qMail:"¿Cuál es su correo electrónico?",
+ qMailSub:"<b>El mismo día</b> de su tratamiento le enviamos a esta dirección una guía hecha para su piel.",
+ afterT:"El mismo día de su tratamiento le enviaremos todo esto por correo",
+ aList:["Notas de la especialista — lo que hemos visto hoy en su piel","Su rutina en casa — mañana y noche, paso a paso","Productos elegidos para usted que puede comprar aquí en Corea"],
+ trust:"Somos <b>terapeutas formadas en piel y en ingredientes</b>. Puede estar tranquila — solo elegiremos lo mejor para la piel que tiene hoy.", see:"Nos vemos el día de su cita.",
+ mail1:"Correo electrónico", mail2:"Escríbalo una vez más",
+ mailOk:"Las dos coinciden", mailNo:"Las dos son diferentes", mailBad:"Revise el formato del correo",
+ mailHint:"Lo pedimos dos veces porque una letra mal escrita impide que llegue la guía.",
+ qWho:"Un poco sobre usted", qWhoSub:"Puede saltar lo que prefiera no contestar.",
+ lGender:"Sexo", lAge:"Edad",
+ qWash:"Unos 30 minutos después de lavarse la cara, ¿cómo la nota?",
+ qWashSub:"Piense en esta mañana o en anoche.",
+ washOpts:["Tirante y áspera","Brillante por toda la cara","Brillante solo en nariz y frente","Se pone roja con facilidad","No noto nada especial"],
+ qCon:"¿Hay algo que le preocupe últimamente?", qConSub:"Puede marcar varias, o pulsar «Ninguna».",
+ qAlg:"¿Alguna alergia o algo que debamos saber?",
+ qAlgSub:"Alergias a cosméticos, medicación, tratamientos recientes, embarazo — lo que sea.",
+ algNone:"Nada que señalar", algPh:"ej.: alergia al perfume / embarazada / uso retinol",
+ qOk:"Una última cosa",
+ okBody:"Lo que ha escrito se usa <b>solo para cuidar su piel</b>. No lo compartimos.",
+ okAgree:"Sí, estoy de acuerdo",
+ saving:"Enviando…", savedT:"¡Gracias!",
+ savedB:"Ya está todo listo.<br>El día de su cita solo tiene que decirnos su nombre.",
+ idLabel:"Referencia", failT:"No se pudo enviar",
+ failB:"Compruebe su conexión y vuelva a pulsar.", retry:"Enviar de nuevo",
+ errName:"Escriba su nombre", errMail:"Escriba el mismo correo en las dos casillas", errOk:"Marque la casilla",
+ ageOpts:["Menores de 19","19-24","25-29","30-34","35-39","40-44","45-49","50-54","55+"],
+ genderOpts:["Femenino","Masculino","Otro"],
+ skintypeOpts:["Grasa (exceso de sebo, brillo)","Seca (descamación, tirantez)","Mixta (zona T grasa, mejillas secas)","Sensible (enrojecimiento, irritación)","Normal (equilibrada)"],
+ concernOpts:["Acné / Brotes","Poros obstruidos / Puntos negros","Tono apagado, desigual","Pigmentación / Manchas oscuras","Enrojecimiento / Irritación","Líneas finas / Envejecimiento","Pérdida de firmeza","Sequedad / Deshidratación"]
+},
+ja:{
+ start:"はじめる", back:"戻る", next:"次へ", submit:"送信する",
+ calmTitle:"テストではありません",
+ calm1:"正解も不正解もありません。感じたままにお答えください。",
+ calm2:"わからないときは<b>「わかりません」</b>を押してください。お肌は私たちが直接拝見します。",
+ calm3:"気になることがあれば押してください。なければそのまま進んで大丈夫です。",
+ dk:"わかりません", none:"あてはまるものはない",
+ qName:"お名前を教えてください", qNameSub:"ご予約のお名前でお願いします。", namePh:"お名前",
+ qWhen:"いつご来店ですか？", whenToday:"今日", whenTom:"明日", whenDay:"明後日", whenPick:"日付を選ぶ",
+ qMail:"メールアドレスを教えてください",
+ qMailSub:"施術が終わった<b>当日のうちに</b>、お客様のお肌に合わせたご案内をこちらにお送りします。",
+ afterT:"施術当日のうちに、こちらのメールへお送りします",
+ aList:["専門家のコメント — 本日拝見したお肌について","ホームケアの手順 — 朝と夜、順番どおりに","韓国で購入できる、お客様に合う化粧品のご提案"],
+ trust:"私たちは<b>成分と肌を学んだ専門テラピスト</b>です。どうぞご安心ください — 本日のお肌の状態にいちばん良い選択だけを行います。", see:"ご予約の日にお会いしましょう。",
+ mail1:"メールアドレス", mail2:"もう一度ご入力ください",
+ mailOk:"同じです", mailNo:"内容が違います", mailBad:"メールアドレスの形式をご確認ください",
+ mailHint:"一文字違うとご案内が届かないため、二度お伺いします。",
+ qWho:"差し支えなければ", qWhoSub:"お答えにくいものは飛ばして構いません。",
+ lGender:"性別", lAge:"年代",
+ qWash:"洗顔して30分ほど経つと、お顔はどんな感じですか？",
+ qWashSub:"今朝か昨夜を思い出してみてください。",
+ washOpts:["つっぱってカサつく","全体的にテカる","鼻とおでこだけテカる","すぐ赤くなる","特に何も感じない"],
+ qCon:"最近気になることはありますか？", qConSub:"いくつ選んでも構いません。なければ「あてはまるものはない」を。",
+ qAlg:"アレルギーや、お伝えいただくことはありますか？",
+ qAlgSub:"化粧品アレルギー、服用中のお薬、最近の施術、ご妊娠 — 何でも結構です。",
+ algNone:"特にありません", algPh:"例：香料アレルギー／妊娠中／レチノール使用中",
+ qOk:"最後にひとつ",
+ okBody:"ご記入いただいた内容は<b>お肌のケアのためだけ</b>に使います。外部には出しません。",
+ okAgree:"はい、同意します",
+ saving:"送信しています…", savedT:"ありがとうございます！",
+ savedB:"受付が完了しました。<br>ご来店の日はお名前をおっしゃるだけで大丈夫です。",
+ idLabel:"受付番号", failT:"送信できませんでした",
+ failB:"通信環境をご確認のうえ、もう一度押してください。", retry:"もう一度送る",
+ errName:"お名前をご入力ください", errMail:"二つの欄に同じメールアドレスをご入力ください", errOk:"チェックをお願いします",
+ ageOpts:["19歳未満","19-24歳","25-29歳","30-34歳","35-39歳","40-44歳","45-49歳","50-54歳","55歳以上"],
+ genderOpts:["女性","男性","その他"],
+ skintypeOpts:["脂性 (皮脂多い、テカリ)","乾燥 (粉吹き、つっぱり、ザラつき)","混合 (Tゾーン脂性、頬乾燥)","敏感 (赤み、刺激)","普通 (バランス良好)"],
+ concernOpts:["ニキビ・吹き出物","毛穴の詰まり・黒ずみ","くすみ・色ムラ","シミ・色素沈着","赤み・刺激","小じわ・老化","ハリ不足","乾燥・水分不足"]
+},
+zh:{
+ start:"開始", back:"上一步", next:"下一步", submit:"送出",
+ calmTitle:"這不是考試",
+ calm1:"沒有對錯。照您的感覺回答就好。",
+ calm2:"不確定時請按<b>「不確定」</b>。您的膚況由我們親自檢視。",
+ calm3:"有在意的地方就按，沒有的話直接跳過也沒關係。",
+ dk:"不確定", none:"都沒有",
+ qName:"請問您的姓名", qNameSub:"請填寫預約時的姓名。", namePh:"姓名",
+ qWhen:"您哪一天來？", whenToday:"今天", whenTom:"明天", whenDay:"後天", whenPick:"自己選日期",
+ qMail:"請留下您的電子信箱",
+ qMailSub:"療程結束<b>當天之內</b>，我們會把為您的膚況量身寫的建議寄到這個信箱。",
+ afterT:"療程當天之內，這些都會寄到您的信箱",
+ aList:["專業建議 — 今天在您肌膚上看到的狀況","居家保養順序 — 早晚各一套，照順序做","在韓國就買得到、適合您的保養品推薦"],
+ trust:"我們是<b>研讀成分與肌膚的專業美容師</b>。請您放心 — 我們只會為您今天的膚況做最合適的選擇。", see:"預約當天見。",
+ mail1:"電子信箱", mail2:"請再輸入一次",
+ mailOk:"兩次相同", mailNo:"兩次不一樣", mailBad:"請確認信箱格式",
+ mailHint:"少一個字母就收不到，所以請您輸入兩次。",
+ qWho:"方便的話請告訴我們", qWhoSub:"不想回答的可以跳過。",
+ lGender:"性別", lAge:"年齡層",
+ qWash:"洗臉後約30分鐘，臉上感覺如何？",
+ qWashSub:"請回想今天早上或昨晚。",
+ washOpts:["緊繃乾澀","整臉出油","只有鼻子和額頭出油","很容易泛紅","沒有特別感覺"],
+ qCon:"最近有在意的狀況嗎？", qConSub:"可以複選，沒有的話請按「都沒有」。",
+ qAlg:"有過敏或需要我們注意的事嗎？",
+ qAlgSub:"化妝品過敏、服用中的藥、近期療程、懷孕 — 都可以寫。",
+ algNone:"沒有特別的", algPh:"例：香料過敏／懷孕中／正在用A醇",
+ qOk:"最後一件事",
+ okBody:"您填寫的內容<b>只用於保養建議</b>，不會外流。",
+ okAgree:"是的，我同意",
+ saving:"傳送中…", savedT:"謝謝您！",
+ savedB:"已經完成登記。<br>當天只要告訴我們您的姓名就可以了。",
+ idLabel:"登記編號", failT:"無法送出",
+ failB:"請確認網路後再按一次。", retry:"重新送出",
+ errName:"請填寫姓名", errMail:"請在兩欄填入相同的信箱", errOk:"請勾選同意",
+ ageOpts:["19歲以下","19-24歲","25-29歲","30-34歲","35-39歲","40-44歲","45-49歲","50-54歲","55歲以上"],
+ genderOpts:["女性","男性","其他"],
+ skintypeOpts:["油性 (皮脂多, 油光)","乾性 (起皮, 緊繃, 粗糙)","混合性 (T區油, 兩頰乾)","敏感性 (泛紅, 刺激)","中性 (平衡良好)"],
+ concernOpts:["痘痘 / 暗瘡","毛孔堵塞 / 黑頭","暗沉 / 膚色不均","色素沉澱 / 暗斑","泛紅 / 刺激","細紋 / 老化","彈性不足","乾燥 / 缺水"]
+},
+fr:{
+ start:"Commencer", back:"Retour", next:"Suivant", submit:"Envoyer",
+ calmTitle:"Ce n'est pas un examen",
+ calm1:"Il n'y a pas de bonne ou de mauvaise réponse. Dites-nous ce que vous ressentez.",
+ calm2:"Si vous ne savez pas, appuyez sur <b>« Je ne sais pas »</b>. Votre peau, c'est nous qui l'examinons.",
+ calm3:"Cochez ce qui vous gêne. Si rien ne vous gêne, passez simplement.",
+ dk:"Je ne sais pas", none:"Aucune",
+ qName:"Quel est votre nom ?", qNameSub:"Utilisez le nom de votre réservation.", namePh:"Nom",
+ qWhen:"Quel jour venez-vous ?", whenToday:"Aujourd'hui", whenTom:"Demain", whenDay:"Après-demain", whenPick:"Choisir une date",
+ qMail:"Quelle est votre adresse e-mail ?",
+ qMailSub:"<b>Le jour même</b> de votre soin, nous envoyons à cette adresse un guide fait pour votre peau.",
+ afterT:"Le jour de votre soin, nous vous envoyons tout cela par e-mail",
+ aList:["Les notes de la spécialiste — ce que nous avons vu sur votre peau","Votre routine à la maison — matin et soir, dans l'ordre","Des produits choisis pour vous, que vous pouvez acheter ici en Corée"],
+ trust:"Nous sommes des <b>thérapeutes formées à la peau et aux ingrédients</b>. Soyez tranquille — nous ne choisirons que ce qui convient le mieux à votre peau d'aujourd'hui.", see:"À bientôt, le jour de votre rendez-vous.",
+ mail1:"Adresse e-mail", mail2:"Saisissez-la encore une fois",
+ mailOk:"Les deux sont identiques", mailNo:"Les deux sont différentes", mailBad:"Vérifiez le format de l'adresse",
+ mailHint:"Nous demandons deux fois : une lettre erronée et le guide n'arrive jamais.",
+ qWho:"Quelques informations", qWhoSub:"Passez ce que vous préférez ne pas dire.",
+ lGender:"Genre", lAge:"Tranche d'âge",
+ qWash:"Environ 30 minutes après le nettoyage, comment est votre visage ?",
+ qWashSub:"Pensez à ce matin, ou à hier soir.",
+ washOpts:["Tiraillements, peau sèche","Brillant sur tout le visage","Brillant seulement sur le nez et le front","Rougit facilement","Rien de particulier"],
+ qCon:"Quelque chose vous gêne en ce moment ?", qConSub:"Plusieurs choix possibles, ou appuyez sur « Aucune ».",
+ qAlg:"Allergies ou choses à nous signaler ?",
+ qAlgSub:"Allergies cosmétiques, traitements en cours, soins récents, grossesse — tout est utile.",
+ algNone:"Rien à signaler", algPh:"ex. : allergie au parfum / enceinte / rétinol en cours",
+ qOk:"Une dernière chose",
+ okBody:"Ce que vous écrivez sert <b>uniquement à soigner votre peau</b>. Nous ne le partageons pas.",
+ okAgree:"Oui, j'accepte",
+ saving:"Envoi…", savedT:"Merci !",
+ savedB:"C'est terminé.<br>Le jour venu, donnez-nous simplement votre nom.",
+ idLabel:"Référence", failT:"Envoi impossible",
+ failB:"Vérifiez votre connexion et appuyez à nouveau.", retry:"Renvoyer",
+ errName:"Veuillez saisir votre nom", errMail:"Saisissez la même adresse dans les deux cases", errOk:"Veuillez cocher la case",
+ ageOpts:["Moins de 19 ans","19-24","25-29","30-34","35-39","40-44","45-49","50-54","55+"],
+ genderOpts:["Femme","Homme","Autre"],
+ skintypeOpts:["Grasse (excès de sébum, brillance)","Sèche (squames, tiraillements)","Mixte (zone T grasse, joues sèches)","Sensible (rougeurs, irritations)","Normale (équilibrée)"],
+ concernOpts:["Acné / Boutons","Pores obstrués / Points noirs","Teint terne, irrégulier","Pigmentation / Taches","Rougeurs / Irritation","Rides / Vieillissement","Manque de fermeté","Sécheresse / Déshydratation"]
+},
+de:{
+ start:"Starten", back:"Zurück", next:"Weiter", submit:"Absenden",
+ calmTitle:"Das ist kein Test",
+ calm1:"Es gibt kein Richtig oder Falsch. Sagen Sie einfach, was Sie bemerken.",
+ calm2:"Wenn Sie unsicher sind, tippen Sie auf <b>„Weiß ich nicht“</b>. Ihre Haut sehen wir uns selbst an.",
+ calm3:"Wählen Sie, was Sie stört. Wenn nichts stört, gehen Sie einfach weiter.",
+ dk:"Weiß ich nicht", none:"Nichts davon",
+ qName:"Wie heißen Sie?", qNameSub:"Bitte den Namen Ihrer Buchung.", namePh:"Name",
+ qWhen:"Wann kommen Sie?", whenToday:"Heute", whenTom:"Morgen", whenDay:"Übermorgen", whenPick:"Datum wählen",
+ qMail:"Wie lautet Ihre E-Mail-Adresse?",
+ qMailSub:"<b>Noch am selben Tag</b> senden wir Ihnen an diese Adresse eine Anleitung, die auf Ihre Haut abgestimmt ist.",
+ afterT:"Noch am Tag Ihrer Behandlung senden wir Ihnen all das per E-Mail",
+ aList:["Notizen der Fachkraft — was wir heute an Ihrer Haut gesehen haben","Ihre Routine zu Hause — morgens und abends, Schritt für Schritt","Für Sie ausgewählte Produkte, die Sie hier in Korea kaufen können"],
+ trust:"Wir sind <b>Therapeutinnen mit Ausbildung in Haut und Inhaltsstoffen</b>. Sie sind gut aufgehoben — wir wählen nur das, was für Ihre Haut heute am besten ist.", see:"Wir sehen uns am Tag Ihres Termins.",
+ mail1:"E-Mail-Adresse", mail2:"Bitte noch einmal eingeben",
+ mailOk:"Beide stimmen überein", mailNo:"Beide sind verschieden", mailBad:"Bitte das Format prüfen",
+ mailHint:"Wir fragen zweimal — ein falscher Buchstabe und die Anleitung kommt nie an.",
+ qWho:"Ein wenig zu Ihnen", qWhoSub:"Überspringen Sie, was Sie nicht sagen möchten.",
+ lGender:"Geschlecht", lAge:"Altersgruppe",
+ qWash:"Wie fühlt sich Ihr Gesicht etwa 30 Minuten nach dem Waschen an?",
+ qWashSub:"Denken Sie an heute Morgen oder gestern Abend.",
+ washOpts:["Spannt und schuppt","Überall glänzend","Nur Nase und Stirn glänzen","Wird schnell rot","Nichts Besonderes"],
+ qCon:"Stört Sie zurzeit etwas?", qConSub:"Mehrfachauswahl möglich, oder „Nichts davon“.",
+ qAlg:"Allergien oder etwas, das wir wissen sollten?",
+ qAlgSub:"Kosmetikallergien, Medikamente, kürzliche Behandlungen, Schwangerschaft — alles ist hilfreich.",
+ algNone:"Nichts zu nennen", algPh:"z. B. Duftstoffallergie / schwanger / Retinol in Anwendung",
+ qOk:"Eine letzte Sache",
+ okBody:"Ihre Angaben nutzen wir <b>nur für die Pflege Ihrer Haut</b>. Wir geben sie nicht weiter.",
+ okAgree:"Ja, ich stimme zu",
+ saving:"Wird gesendet…", savedT:"Vielen Dank!",
+ savedB:"Alles erledigt.<br>Am Tag selbst nennen Sie uns einfach Ihren Namen.",
+ idLabel:"Referenz", failT:"Senden fehlgeschlagen",
+ failB:"Bitte Verbindung prüfen und erneut tippen.", retry:"Erneut senden",
+ errName:"Bitte Namen eingeben", errMail:"Bitte in beide Felder dieselbe Adresse eingeben", errOk:"Bitte ankreuzen",
+ ageOpts:["Unter 19","19-24","25-29","30-34","35-39","40-44","45-49","50-54","55+"],
+ genderOpts:["Weiblich","Männlich","Sonstige"],
+ skintypeOpts:["Fettig (überschüssiger Talg, Glanz)","Trocken (Schuppen, Spannungsgefühl)","Mischhaut (T-Zone fettig, Wangen trocken)","Empfindlich (Rötungen, Reizungen)","Normal (ausgeglichen)"],
+ concernOpts:["Akne / Pickel","Verstopfte Poren / Mitesser","Fahler, ungleichmäßiger Teint","Pigmentierung / Flecken","Rötung / Reizung","Falten / Alterung","Verlust an Festigkeit","Trockenheit / Dehydrierung"]
+},
+it:{
+ start:"Inizia", back:"Indietro", next:"Avanti", submit:"Invia",
+ calmTitle:"Non è un esame",
+ calm1:"Non ci sono risposte giuste o sbagliate. Ci dica solo come si sente.",
+ calm2:"Se non è sicura, tocchi <b>«Non lo so»</b>. La pelle la guardiamo noi.",
+ calm3:"Segni ciò che la preoccupa. Se non c'è nulla, prosegua pure.",
+ dk:"Non lo so", none:"Nessuna",
+ qName:"Come si chiama?", qNameSub:"Usi il nome della prenotazione.", namePh:"Nome",
+ qWhen:"Quando viene?", whenToday:"Oggi", whenTom:"Domani", whenDay:"Dopodomani", whenPick:"Scegli la data",
+ qMail:"Qual è il suo indirizzo e-mail?",
+ qMailSub:"<b>Lo stesso giorno</b> del trattamento le inviamo a questo indirizzo una guida pensata per la sua pelle.",
+ afterT:"Il giorno stesso del trattamento le inviamo tutto questo via e-mail",
+ aList:["Le note della specialista — ciò che abbiamo visto oggi sulla sua pelle","La sua routine a casa — mattina e sera, nell'ordine giusto","Prodotti scelti per lei, acquistabili qui in Corea"],
+ trust:"Siamo <b>terapiste formate sulla pelle e sugli ingredienti</b>. Può stare tranquilla — sceglieremo solo ciò che è meglio per la pelle che ha oggi.", see:"Ci vediamo il giorno del suo appuntamento.",
+ mail1:"Indirizzo e-mail", mail2:"Lo scriva ancora una volta",
+ mailOk:"I due coincidono", mailNo:"I due sono diversi", mailBad:"Controlli il formato dell'indirizzo",
+ mailHint:"Lo chiediamo due volte: una lettera sbagliata e la guida non arriva.",
+ qWho:"Qualcosa su di lei", qWhoSub:"Salti pure ciò che preferisce non dire.",
+ lGender:"Genere", lAge:"Fascia d'età",
+ qWash:"Circa 30 minuti dopo la detersione, come sente il viso?",
+ qWashSub:"Pensi a stamattina, o a ieri sera.",
+ washOpts:["Tira ed è ruvido","Lucido su tutto il viso","Lucido solo su naso e fronte","Si arrossa facilmente","Niente di particolare"],
+ qCon:"C'è qualcosa che la preoccupa ultimamente?", qConSub:"Può sceglierne più di una, oppure tocchi «Nessuna».",
+ qAlg:"Allergie o qualcosa che dovremmo sapere?",
+ qAlgSub:"Allergie ai cosmetici, farmaci, trattamenti recenti, gravidanza — va bene tutto.",
+ algNone:"Niente da segnalare", algPh:"es.: allergia ai profumi / incinta / uso retinolo",
+ qOk:"Un'ultima cosa",
+ okBody:"Quanto ha scritto serve <b>solo a prendersi cura della sua pelle</b>. Non lo condividiamo.",
+ okAgree:"Sì, acconsento",
+ saving:"Invio in corso…", savedT:"Grazie!",
+ savedB:"È tutto pronto.<br>Il giorno della visita le basterà dirci il suo nome.",
+ idLabel:"Riferimento", failT:"Invio non riuscito",
+ failB:"Controlli la connessione e tocchi di nuovo.", retry:"Invia di nuovo",
+ errName:"Inserisca il suo nome", errMail:"Scriva la stessa e-mail in entrambi i campi", errOk:"Spunti la casella",
+ ageOpts:["Meno di 19","19-24","25-29","30-34","35-39","40-44","45-49","50-54","55+"],
+ genderOpts:["Femminile","Maschile","Altro"],
+ skintypeOpts:["Grassa (sebo in eccesso, lucidità)","Secca (desquamazione, sensazione di tiraggio)","Mista (zona T grassa, guance secche)","Sensibile (rossore, irritazione)","Normale (equilibrata)"],
+ concernOpts:["Acne / Imperfezioni","Pori ostruiti / Punti neri","Incarnato spento e irregolare","Iperpigmentazione / Macchie scure","Rossore / Irritazione","Rughe sottili / Invecchiamento","Perdita di tonicità","Secchezza / Disidratazione"]
+},
+ar:{
+ start:"ابدأ", back:"رجوع", next:"التالي", submit:"إرسال",
+ calmTitle:"هذا ليس اختبارًا",
+ calm1:"لا توجد إجابة صحيحة أو خاطئة. أخبرينا بما تلاحظينه فقط.",
+ calm2:"إن لم تكوني متأكدة، اضغطي <b>«لست متأكدة»</b>. نحن من سنفحص بشرتك.",
+ calm3:"اختاري ما يزعجك. وإن لم يكن هناك شيء، تابعي ببساطة.",
+ dk:"لست متأكدة", none:"لا شيء من هذه",
+ qName:"ما اسمك؟", qNameSub:"يرجى استخدام الاسم المدوّن في الحجز.", namePh:"الاسم",
+ qWhen:"متى ستأتين؟", whenToday:"اليوم", whenTom:"غدًا", whenDay:"بعد غد", whenPick:"اختيار التاريخ",
+ qMail:"ما هو بريدك الإلكتروني؟",
+ qMailSub:"<b>في اليوم نفسه</b> الذي تتلقين فيه الجلسة، نرسل إلى هذا العنوان دليلًا مُعدًّا لبشرتك.",
+ afterT:"في يوم جلستك نفسه، نرسل إليك كل هذا على بريدك",
+ aList:["ملاحظات المختصة — ما لاحظناه على بشرتك اليوم","روتينك في المنزل — صباحًا ومساءً، بالترتيب","منتجات مختارة لك ويمكنك شراؤها هنا في كوريا"],
+ trust:"نحن <b>أخصائيات مدرَّبات في البشرة والمكوّنات</b>. كوني مطمئنة — لن نختار إلا ما هو الأفضل لبشرتك اليوم.", see:"نراكِ في يوم موعدك.",
+ mail1:"البريد الإلكتروني", mail2:"يرجى كتابته مرة أخرى",
+ mailOk:"العنوانان متطابقان", mailNo:"العنوانان مختلفان", mailBad:"يرجى التحقق من صيغة البريد",
+ mailHint:"نسأل مرتين لأن حرفًا واحدًا خاطئًا يمنع وصول الدليل.",
+ qWho:"نبذة عنك", qWhoSub:"يمكنك تخطي ما لا ترغبين بالإجابة عنه.",
+ lGender:"الجنس", lAge:"الفئة العمرية",
+ qWash:"بعد نحو ٣٠ دقيقة من غسل الوجه، كيف تشعرين به؟",
+ qWashSub:"تذكّري هذا الصباح أو الليلة الماضية.",
+ washOpts:["مشدود وجاف","لامع في كل الوجه","لامع في الأنف والجبهة فقط","يحمرّ بسهولة","لا أشعر بشيء معيّن"],
+ qCon:"هل يزعجك شيء مؤخرًا؟", qConSub:"يمكنك اختيار أكثر من واحد، أو اضغطي «لا شيء من هذه».",
+ qAlg:"هل لديك حساسية أو شيء ينبغي أن نعرفه؟",
+ qAlgSub:"حساسية من مستحضرات، أدوية، جلسات حديثة، حمل — كل شيء مفيد.",
+ algNone:"لا يوجد", algPh:"مثال: حساسية من العطور / حامل / أستخدم الريتينول",
+ qOk:"أمر أخير",
+ okBody:"ما كتبتِه يُستخدم <b>للعناية ببشرتك فقط</b>. ولا نشاركه مع أحد.",
+ okAgree:"نعم، أوافق",
+ saving:"جارٍ الإرسال…", savedT:"شكرًا لك!",
+ savedB:"اكتمل التسجيل.<br>يوم زيارتك يكفي أن تذكري اسمك.",
+ idLabel:"رقم التسجيل", failT:"تعذّر الإرسال",
+ failB:"يرجى التحقق من الاتصال والضغط مرة أخرى.", retry:"إعادة الإرسال",
+ errName:"يرجى كتابة الاسم", errMail:"اكتبي البريد نفسه في الحقلين", errOk:"يرجى وضع علامة الموافقة",
+ ageOpts:["أقل من 19","19-24","25-29","30-34","35-39","40-44","45-49","50-54","+55"],
+ genderOpts:["أنثى","ذكر","أخرى"],
+ skintypeOpts:["دهنية (إفراز زائد، لمعان)","جافة (تقشر، شد، خشونة)","مختلطة (منطقة T دهنية، الخدود جافة)","حساسة (احمرار، تهيج)","عادية (متوازنة)"],
+ concernOpts:["حب الشباب","المسام المسدودة / الرؤوس السوداء","بشرة باهتة، غير موحدة","تصبغات / بقع داكنة","احمرار / تهيج","خطوط دقيقة / شيخوخة","فقدان النضارة","جفاف / نقص الترطيب"]
+},
+he:{
+ start:"להתחיל", back:"חזרה", next:"הבא", submit:"שליחה",
+ calmTitle:"זה לא מבחן",
+ calm1:"אין תשובות נכונות או שגויות. פשוט ספרי לנו מה את מרגישה.",
+ calm2:"אם את לא בטוחה, לחצי על <b>«אני לא בטוחה»</b>. את העור אנחנו נבדוק בעצמנו.",
+ calm3:"סמני מה שמפריע לך. אם שום דבר לא מפריע, אפשר פשוט להמשיך.",
+ dk:"אני לא בטוחה", none:"אף אחד מאלה",
+ qName:"מה שמך?", qNameSub:"נא להשתמש בשם שבהזמנה.", namePh:"שם",
+ qWhen:"מתי את מגיעה?", whenToday:"היום", whenTom:"מחר", whenDay:"מחרתיים", whenPick:"בחירת תאריך",
+ qMail:"מה כתובת האימייל שלך?",
+ qMailSub:"<b>עוד באותו יום</b> של הטיפול נשלח לכתובת הזו מדריך שנכתב במיוחד לעור שלך.",
+ afterT:"עוד ביום הטיפול נשלח לך את כל אלה במייל",
+ aList:["הערות המומחית — מה שראינו היום בעור שלך","השגרה שלך בבית — בוקר וערב, לפי הסדר","מוצרים שנבחרו עבורך ואפשר לקנות כאן בקוריאה"],
+ trust:"אנחנו <b>מטפלות שלמדו עור ומרכיבים</b>. את בידיים טובות — נבחר רק את מה שהכי טוב לעור שיש לך היום.", see:"נתראה ביום התור שלך.",
+ mail1:"כתובת אימייל", mail2:"נא להקליד שוב",
+ mailOk:"השתיים זהות", mailNo:"השתיים שונות", mailBad:"נא לבדוק את מבנה הכתובת",
+ mailHint:"אנחנו שואלים פעמיים — אות אחת שגויה והמדריך לא מגיע.",
+ qWho:"קצת עלייך", qWhoSub:"אפשר לדלג על מה שלא נוח לך לענות.",
+ lGender:"מין", lAge:"קבוצת גיל",
+ qWash:"כ־30 דקות אחרי שטיפת הפנים, איך הפנים מרגישות?",
+ qWashSub:"חשבי על הבוקר, או על אתמול בלילה.",
+ washOpts:["מתוחות ויבשות","מבריקות בכל הפנים","מבריקות רק באף ובמצח","מאדימות בקלות","שום דבר מיוחד"],
+ qCon:"משהו מטריד אותך לאחרונה?", qConSub:"אפשר לבחור כמה, או ללחוץ «אף אחד מאלה».",
+ qAlg:"יש אלרגיה או משהו שכדאי שנדע?",
+ qAlgSub:"אלרגיה לתמרוקים, תרופות, טיפולים אחרונים, היריון — הכול עוזר.",
+ algNone:"אין משהו מיוחד", algPh:"למשל: אלרגיה לבושם / בהיריון / משתמשת ברטינול",
+ qOk:"דבר אחרון",
+ okBody:"מה שכתבת משמש <b>רק לטיפול בעור שלך</b>. איננו משתפים זאת.",
+ okAgree:"כן, אני מסכימה",
+ saving:"שולח…", savedT:"תודה רבה!",
+ savedB:"הרישום הושלם.<br>ביום הביקור מספיק שתגידי לנו את שמך.",
+ idLabel:"מספר רישום", failT:"השליחה נכשלה",
+ failB:"נא לבדוק את החיבור וללחוץ שוב.", retry:"לשלוח שוב",
+ errName:"נא להזין שם", errMail:"נא להזין את אותה כתובת בשני השדות", errOk:"נא לסמן את התיבה",
+ ageOpts:["מתחת ל-19","19-24","25-29","30-34","35-39","40-44","45-49","50-54","55+"],
+ genderOpts:["נקבה","זכר","אחר"],
+ skintypeOpts:["שמן (חלב יתר, ברק)","יבש (קילופים, מתח)","מעורב (T שמן, לחיים יבשות)","רגיש (אדמומיות, גירוי)","רגיל (מאוזן)"],
+ concernOpts:["אקנה / פצעונים","נקבוביות סתומות / קומדונים","עור עמום, לא אחיד","פיגמנטציה / כתמים","אדמומיות / גירוי","קמטים דקים / הזדקנות","אובדן מוצקות","יובש / חוסר לחות"]
+}
+};
+
+/* ═══════════ 주소에 실려 온 정보 ═══════════ */
+var Q = (function(){
+  var o = {};
+  (location.search || "").replace(/^\?/,"").split("&").forEach(function(kv){
+    if(!kv) return;
+    var i = kv.indexOf("=");
+    var k = i<0 ? kv : kv.slice(0,i);
+    var v = i<0 ? "" : decodeURIComponent(kv.slice(i+1).replace(/\+/g," "));
+    o[k] = v;
+  });
+  return o;
+})();
+var FIXED_DATE = /^\d{4}-\d{2}-\d{2}$/.test(Q.d || "") ? Q.d : null;   /* ?d=2026-11-02 */
+var GROUP      = (Q.g || "").slice(0,40);                              /* ?g=스페인12 */
+
+/* ═══════════ 상태 ═══════════ */
+var lang = null, step = 0, sending = false, doneCaseId = null;
+var D = {
+  name:"", date:FIXED_DATE || "", email:"", email2:"",
+  gender:null, age:null, wash:null, washDk:false,
+  concerns:[], conNone:false, conDk:false,
+  algNone:false, algText:"", agree:false
+};
+/* 「세수 30분 뒤」 → 기존 피부타입 칸으로 옮기는 표 */
+var WASH2SKIN = [1, 0, 2, 3, 4];   /* 당김→건성 · 번들→지성 · T존→복합 · 빨개짐→민감 · 무감→정상 */
+
+function t(){ return T[lang] || T.en; }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+  return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
+function $(id){ return document.getElementById(id); }
+
+/* ═══════════ 화면 차례 ═══════════ */
+function steps(){
+  var s = ["calm","name","mail","who","wash","con","alg","ok"];
+  return s;
+}
+function lastStep(){ return steps().length - 1; }
+
+/* ═══════════ 언어 고르기 ═══════════ */
+function renderLang(){
+  $("prog").classList.add("hide");
+  $("foot").classList.add("hide");
+  $("brandTop").classList.add("hide");     /* 이름은 맨 아래로 내립니다 */
+  document.documentElement.lang = "ko";
+  document.body.removeAttribute("dir");
+  document.body.classList.add("langmode");
+  $("screen").innerHTML =
+    '<div class="langpage">' +
+      '<div class="langhead"><div class="t">CHOOSE YOUR LANGUAGE</div><div class="u"></div></div>' +
+      '<div class="langgrid">' +
+      LANGS.map(function(L){
+        return '<button class="langbtn" lang="'+L[0]+'"'+(RTL[L[0]]?' dir="rtl"':'')+
+               ' onclick="pickLang(\''+L[0]+'\')">'+esc(L[1])+'</button>';
+      }).join("") +
+      '</div>' +
+      '<div class="colophon"><div class="r"></div><div class="n">Laurel Studio</div></div>' +
+    '</div>';
+}
+window.pickLang = function(code){
+  lang = code;
+  document.body.classList.remove("langmode");
+  $("brandTop").classList.remove("hide");
+  document.documentElement.lang = code;
+  if (RTL[code]) document.body.setAttribute("dir","rtl");
+  else document.body.removeAttribute("dir");
+  step = 0;
+  render();
+};
+
+/* ═══════════ 공통 조각 ═══════════ */
+function optBtn(on, label, handler, square, dashed){
+  return '<button class="opt'+(square?' sq':'')+(dashed?' dk':'')+(on?' on':'')+'" onclick="'+handler+'">' +
+           '<span class="mark">'+(on?'✓':'')+'</span><span class="txt">'+label+'</span></button>';
+}
+
+/* ═══════════ 각 화면 ═══════════ */
+function render(){
+  var L = t(), s = steps()[step], h = "";
+
+  $("prog").classList.remove("hide");
+  $("foot").classList.remove("hide");
+  var pct = Math.round((step) / lastStep() * 100);
+  $("barfill").style.width = pct + "%";
+  $("barlbl").textContent = (step+1) + " / " + (lastStep()+1);
+  $("btnBack").classList.toggle("hide", step === 0);
+  $("btnBack").textContent = L.back;
+  $("btnNext").textContent = (s === "ok") ? L.submit : (s === "calm" ? L.start : L.next);
+  $("btnNext").disabled = false;
+
+  if (s === "calm"){
+    h = '<div class="calm">' +
+          '<b>'+L.calmTitle+'</b>' +
+          '<p>'+L.calm1+'</p><p>'+L.calm2+'</p><p>'+L.calm3+'</p>' +
+        '</div>';
+  }
+
+  else if (s === "name"){
+    h = '<div class="card"><h2>'+L.qName+'</h2><div class="sub">'+L.qNameSub+'</div>' +
+        '<div class="fld"><input type="text" id="f-name" value="'+esc(D.name)+'" placeholder="'+esc(L.namePh)+'" ' +
+        'autocomplete="name" oninput="D.name=this.value"></div></div>';
+    if (!FIXED_DATE){
+      h += '<div class="card"><h2>'+L.qWhen+'</h2><div class="opts">' +
+           optBtn(D.date===dPlus(0), L.whenToday, "setWhen(0)") +
+           optBtn(D.date===dPlus(1), L.whenTom,   "setWhen(1)") +
+           optBtn(D.date===dPlus(2), L.whenDay,   "setWhen(2)") +
+           '</div><div class="fld" style="margin-top:14px">' +
+           '<label class="ilabel">'+L.whenPick+'</label>' +
+           '<input type="date" id="f-date" value="'+esc(D.date)+'" onchange="D.date=this.value;render()"></div></div>';
+    }
+  }
+
+  else if (s === "mail"){
+    h = '<div class="card"><h2>'+L.qMail+'</h2><div class="sub">'+L.qMailSub+'</div>' +
+        '<div class="fld"><label class="ilabel">'+L.mail1+'</label>' +
+        '<input type="email" id="f-m1" value="'+esc(D.email)+'" placeholder="example@email.com" ' +
+        'inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" ' +
+        'oninput="D.email=this.value.trim();paintMail()"></div>' +
+        '<div class="fld"><label class="ilabel">'+L.mail2+'</label>' +
+        '<input type="email" id="f-m2" value="'+esc(D.email2)+'" placeholder="example@email.com" ' +
+        'inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" ' +
+        'onpaste="return false" oninput="D.email2=this.value.trim();paintMail()">' +
+        '<div class="match" id="m-match"></div></div>' +
+        '<div class="note">'+L.mailHint+'</div></div>';
+  }
+
+  else if (s === "who"){
+    h = '<div class="card"><h2>'+L.qWho+'</h2><div class="sub">'+L.qWhoSub+'</div>' +
+        '<div class="glabel">'+L.lGender+'</div><div class="grid2">' +
+        L.genderOpts.map(function(g,i){ return optBtn(D.gender===i, esc(g), "setG("+i+")"); }).join("") +
+        '</div>' +
+        '<div class="glabel">'+L.lAge+'</div><div class="grid2">' +
+        L.ageOpts.map(function(a,i){ return optBtn(D.age===i, esc(a), "setA("+i+")"); }).join("") +
+        '</div></div>';
+  }
+
+  else if (s === "wash"){
+    h = '<div class="card"><h2>'+L.qWash+'</h2><div class="sub">'+L.qWashSub+'</div><div class="opts">' +
+        L.washOpts.map(function(w,i){ return optBtn(!D.washDk && D.wash===i, esc(w), "setW("+i+")"); }).join("") +
+        optBtn(D.washDk, esc(L.dk), "setW(-1)", false, true) +
+        '</div></div>';
+  }
+
+  else if (s === "con"){
+    h = '<div class="card"><h2>'+L.qCon+'</h2><div class="sub">'+L.qConSub+'</div><div class="opts">' +
+        L.concernOpts.map(function(c,i){
+          return optBtn(D.concerns.indexOf(i)>-1, esc(c), "toggleC("+i+")", true);
+        }).join("") +
+        optBtn(D.conNone, esc(L.none), "setCNone()", true, true) +
+        optBtn(D.conDk,   esc(L.dk),   "setCDk()",   true, true) +
+        '</div></div>';
+  }
+
+  else if (s === "alg"){
+    h = '<div class="card"><h2>'+L.qAlg+'</h2><div class="sub">'+L.qAlgSub+'</div><div class="opts">' +
+        optBtn(D.algNone, esc(L.algNone), "setAlgNone()", true, true) +
+        '</div>' +
+        '<div class="fld" style="margin-top:16px">' +
+        '<textarea id="f-alg" placeholder="'+esc(L.algPh)+'" oninput="D.algText=this.value;if(this.value)D.algNone=false;paintAlg()">'+esc(D.algText)+'</textarea>' +
+        '</div></div>';
+  }
+
+  else if (s === "ok"){
+    h = '<div class="card"><h2>'+L.qOk+'</h2>' +
+        '<div class="sub">'+L.okBody+'</div><div class="opts">' +
+        optBtn(D.agree, esc(L.okAgree), "setAgree()", true) +
+        '</div><div class="saving" id="sendmsg"></div></div>';
+  }
+
+  $("screen").innerHTML = h;
+  if (s === "mail") paintMail();
+  if (s === "alg")  paintAlg();
+  window.scrollTo(0,0);
+}
+
+/* ═══════════ 고르기 ═══════════ */
+function dPlus(n){
+  var d = new Date(); d.setDate(d.getDate()+n);
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+window.setWhen = function(n){ D.date = dPlus(n); render(); };
+window.setG = function(i){ D.gender = (D.gender===i ? null : i); render(); };
+window.setA = function(i){ D.age    = (D.age===i    ? null : i); render(); };
+window.setW = function(i){
+  if (i === -1){ D.washDk = !D.washDk; if(D.washDk) D.wash = null; }
+  else { D.wash = (D.wash===i ? null : i); D.washDk = false; }
+  render();
+};
+window.toggleC = function(i){
+  var k = D.concerns.indexOf(i);
+  if (k>-1) D.concerns.splice(k,1); else D.concerns.push(i);
+  if (D.concerns.length){ D.conNone = false; D.conDk = false; }
+  render();
+};
+window.setCNone = function(){ D.conNone = !D.conNone; if(D.conNone){ D.concerns=[]; D.conDk=false; } render(); };
+window.setCDk   = function(){ D.conDk   = !D.conDk;   if(D.conDk){   D.concerns=[]; D.conNone=false; } render(); };
+window.setAlgNone = function(){ D.algNone = !D.algNone; if(D.algNone) D.algText=""; render(); };
+window.setAgree = function(){ D.agree = !D.agree; render(); };
+
+function paintAlg(){
+  var el = $("f-alg"); if(!el) return;
+  el.style.opacity = D.algNone ? ".45" : "1";
+}
+
+function mailValid(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+function paintMail(){
+  var L = t(), el = $("m-match"); if(!el) return;
+  var a = D.email, b = D.email2;
+  if (!a && !b){ el.className="match"; el.textContent=""; return; }
+  if (a && !mailValid(a)){ el.className="match no"; el.textContent="✕ " + L.mailBad; return; }
+  if (!b){ el.className="match"; el.textContent=""; return; }
+  if (a.toLowerCase() === b.toLowerCase()){ el.className="match ok"; el.textContent="✓ " + L.mailOk; }
+  else { el.className="match no"; el.textContent="✕ " + L.mailNo; }
+}
+
+/* ═══════════ 앞뒤로 ═══════════ */
+window.go = function(dir){
+  var L = t(), s = steps()[step];
+  if (dir > 0){
+    if (s === "name"){
+      if (!D.name.trim()){ bump(L.errName); return; }
+      if (!D.date) D.date = dPlus(0);
+    }
+    if (s === "mail"){
+      if (!mailValid(D.email) || D.email.toLowerCase() !== D.email2.toLowerCase()){ bump(L.errMail); return; }
+    }
+    if (s === "ok"){
+      if (!D.agree){ bump(L.errOk); return; }
+      submit(); return;
+    }
+    step = Math.min(step+1, lastStep());
+  } else {
+    step = Math.max(step-1, 0);
+  }
+  render();
+};
+function bump(msg){
+  var box = document.querySelector(".card:last-of-type") || $("screen");
+  var old = document.querySelector(".err"); if(old) old.remove();
+  var d = document.createElement("div");
+  d.className = "err"; d.textContent = msg;
+  box.appendChild(d);
+  d.scrollIntoView({block:"center", behavior:"smooth"});
+}
+
+/* ═══════════ 보내기 ═══════════ */
+function buildPayload(){
+  var K = T.ko;   /* 시트에는 항상 한국어로 적습니다 */
+  var now = new Date();
+  var ds = now.getFullYear() + String(now.getMonth()+1).padStart(2,"0") + String(now.getDate()).padStart(2,"0");
+  if (!doneCaseId) doneCaseId = "CR-" + ds + "-" + String(Date.now()).slice(-4);
+
+  var skin = (!D.washDk && D.wash !== null) ? K.skintypeOpts[WASH2SKIN[D.wash]] : "";
+  var cons = D.concerns.map(function(i){ return K.concernOpts[i]; }).join("|");
+
+  var memo = [];
+  if (D.algNone) memo.push("알러지: 없음");
+  else if (D.algText.trim()) memo.push("알러지·주의: " + D.algText.trim());
+  if (D.conDk)  memo.push("[고민: 잘 모르겠다고 답함]");
+  if (D.conNone) memo.push("[고민: 해당 없음]");
+  if (D.washDk) memo.push("[피부타입: 잘 모르겠다고 답함 — 테라피스트 확인 필요]");
+  if (GROUP) memo.push("[단체: " + GROUP + "]");
+  memo.push("[사전접수 · 언어 " + lang + "]");
+
+  return {
+    case_id: doneCaseId,
+    section: "CARE",
+    saved_at: now.toISOString(),
+    client_name: D.name.trim(),
+    client_email: D.email.trim(),
+    visit_date: D.date || dPlus(0),
+    therapist_name: "",
+    visit_count: "1회차 (신규)",
+    gender: D.gender !== null ? K.genderOpts[D.gender] : "",
+    age_group: D.age !== null ? K.ageOpts[D.age] : "",
+    client_skintype: skin,
+    client_concerns: cons,
+    client_goals: "",
+    client_memo: memo.join("\n"),
+    program: "",
+    source: GROUP ? "단체 사전접수" : "사전접수"
+  };
+}
+
+function callSheet(payload, tries){
+  tries = tries || 3;
+  var attempt = 0;
+  function once(){
+    attempt++;
+    var ctl = ("AbortController" in window) ? new AbortController() : null;
+    var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, 35000);
+    return fetch(WEBHOOK, {
+      method:"POST",
+      headers:{ "Content-Type":"text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+      signal: ctl ? ctl.signal : undefined,
+      redirect:"follow"
+    }).then(function(r){ clearTimeout(timer); return r.json(); })
+      .catch(function(e){
+        clearTimeout(timer);
+        if (attempt < tries){
+          return new Promise(function(res){ setTimeout(res, attempt*1800); }).then(once);
+        }
+        throw e;
+      });
+  }
+  return once();
+}
+
+function submit(){
+  if (sending) return;
+  sending = true;
+  var L = t();
+  $("btnNext").disabled = true;
+  var msg = $("sendmsg"); if (msg) msg.textContent = L.saving;
+
+  callSheet(buildPayload()).then(function(res){
+    sending = false;
+    if (res && (res.status === "ok" || res.status === "success")) showDone();
+    else showFail();
+  }).catch(function(){
+    sending = false;
+    showFail();
+  });
+}
+
+function showDone(){
+  var L = t();
+  $("prog").classList.add("hide");
+  $("foot").classList.add("hide");
+  $("screen").innerHTML =
+    '<div class="card done">' +
+      '<div class="big">✨</div>' +
+      '<h1>'+L.savedT+'</h1>' +
+      '<div class="sub" style="margin-top:10px">'+L.savedB+'</div>' +
+      '<div class="idbox"><div class="k">'+L.idLabel+'</div>' +
+      '<div class="v">'+esc(doneCaseId)+'</div>' +
+      '<div class="n">'+esc(D.name)+'</div></div>' +
+      '<div class="after"><div class="ah">'+L.afterT+'</div><ul>' +
+        L.aList.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("") +
+      '</ul></div>' +
+      '<div class="trust">'+L.trust+'<span class="see">'+esc(L.see)+'</span></div>' +
+    '</div>';
+  window.scrollTo(0,0);
+}
+function showFail(){
+  var L = t();
+  $("btnNext").disabled = false;
+  $("btnNext").textContent = L.retry;
+  var msg = $("sendmsg");
+  if (msg){
+    msg.innerHTML = '<span style="color:var(--red);font-weight:700">' + esc(L.failT) + '</span><br>' + esc(L.failB);
+  }
+}
+
+/* ═══════════ 시작 ═══════════ */
+renderLang();
+</script>
+</body>
+</html>
