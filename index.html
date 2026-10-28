@@ -149,8 +149,10 @@
   .idbox{margin:22px auto 0;max-width:340px;background:var(--goldbg);
          border:2px solid #EADFC4;border-radius:14px;padding:18px}
   .idbox .k{font-size:13px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:700}
-  .idbox .v{font-size:25px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-            color:var(--ink);margin-top:7px;word-break:break-all}
+  .idbox .v4{font-size:52px;font-weight:700;letter-spacing:.1em;line-height:1.15;
+             font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink);margin-top:6px}
+  .idbox .v{font-size:14px;font-weight:500;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+            color:var(--muted);margin-top:4px;word-break:break-all}
   .idbox .n{font-size:16px;color:var(--ink2);margin-top:7px}
   .saving{font-size:17px;color:var(--muted);margin-top:16px;min-height:26px}
 
@@ -210,7 +212,7 @@ ko:{
  calm2:"모르시는 건 <b>「잘 모르겠어요」</b>를 누르세요. 피부는 저희가 직접 보고 확인합니다.",
  calm3:"신경 쓰이는 게 있으면 눌러주시고, 없으면 그냥 넘어가셔도 괜찮습니다.",
  dk:"잘 모르겠어요", none:"해당 없음",
- qName:"성함을 알려주세요", qNameSub:"예약하신 이름으로 적어주세요.", namePh:"이름",
+ qName:"성함을 알려주세요", qNameSub:"<b>성과 이름을 모두</b> 적어주세요. 같은 단체에 비슷한 이름이 많습니다.", namePh:"이름 (성 포함)",
  qWhen:"언제 오시나요?", whenToday:"오늘", whenTom:"내일", whenDay:"모레", whenPick:"날짜 직접 고르기",
  qMail:"메일 주소를 알려주세요",
  qMailSub:"케어가 끝난 <b>당일 안에</b> 고객님 피부에 맞춘 안내를 이 주소로 보내드립니다.",
@@ -249,7 +251,7 @@ en:{
  calm2:"If you are not sure, tap <b>“I'm not sure”</b>. We will look at your skin ourselves.",
  calm3:"Pick anything that bothers you. If nothing does, just move on.",
  dk:"I'm not sure", none:"None of these",
- qName:"What is your name?", qNameSub:"Please use the name on your booking.", namePh:"Name",
+ qName:"What is your name?", qNameSub:"Please write your <b>full name</b> — first and last. Groups often have similar names.", namePh:"Full name",
  qWhen:"When are you coming?", whenToday:"Today", whenTom:"Tomorrow", whenDay:"In 2 days", whenPick:"Choose a date",
  qMail:"What is your email address?",
  qMailSub:"<b>On the same day</b> as your care, we send a guide made for your skin to this address.",
@@ -288,7 +290,7 @@ es:{
  calm2:"Si no está segura, pulse <b>«No lo sé»</b>. Su piel la examinamos nosotras.",
  calm3:"Marque lo que le preocupe. Si no le preocupa nada, puede continuar.",
  dk:"No lo sé", none:"Ninguna",
- qName:"¿Cómo se llama?", qNameSub:"Use el nombre de su reserva.", namePh:"Nombre",
+ qName:"¿Cómo se llama?", qNameSub:"Escriba su <b>nombre y apellido</b>. En los grupos suele haber nombres parecidos.", namePh:"Nombre y apellido",
  qWhen:"¿Qué día viene?", whenToday:"Hoy", whenTom:"Mañana", whenDay:"Pasado mañana", whenPick:"Elegir fecha",
  qMail:"¿Cuál es su correo electrónico?",
  qMailSub:"<b>El mismo día</b> de su tratamiento le enviamos a esta dirección una guía hecha para su piel.",
@@ -327,7 +329,7 @@ ja:{
  calm2:"わからないときは<b>「わかりません」</b>を押してください。お肌は私たちが直接拝見します。",
  calm3:"気になることがあれば押してください。なければそのまま進んで大丈夫です。",
  dk:"わかりません", none:"あてはまるものはない",
- qName:"お名前を教えてください", qNameSub:"ご予約のお名前でお願いします。", namePh:"お名前",
+ qName:"お名前を教えてください", qNameSub:"<b>姓と名の両方</b>をご記入ください。団体では似たお名前が多くなります。", namePh:"お名前（姓名）",
  qWhen:"いつご来店ですか？", whenToday:"今日", whenTom:"明日", whenDay:"明後日", whenPick:"日付を選ぶ",
  qMail:"メールアドレスを教えてください",
  qMailSub:"施術が終わった<b>当日のうちに</b>、お客様のお肌に合わせたご案内をこちらにお送りします。",
@@ -366,7 +368,7 @@ zh:{
  calm2:"不確定時請按<b>「不確定」</b>。您的膚況由我們親自檢視。",
  calm3:"有在意的地方就按，沒有的話直接跳過也沒關係。",
  dk:"不確定", none:"都沒有",
- qName:"請問您的姓名", qNameSub:"請填寫預約時的姓名。", namePh:"姓名",
+ qName:"請問您的姓名", qNameSub:"請填寫<b>姓氏與名字</b>。團體中常有相似的名字。", namePh:"姓名（全名）",
  qWhen:"您哪一天來？", whenToday:"今天", whenTom:"明天", whenDay:"後天", whenPick:"自己選日期",
  qMail:"請留下您的電子信箱",
  qMailSub:"療程結束<b>當天之內</b>，我們會把為您的膚況量身寫的建議寄到這個信箱。",
@@ -405,7 +407,7 @@ fr:{
  calm2:"Si vous ne savez pas, appuyez sur <b>« Je ne sais pas »</b>. Votre peau, c'est nous qui l'examinons.",
  calm3:"Cochez ce qui vous gêne. Si rien ne vous gêne, passez simplement.",
  dk:"Je ne sais pas", none:"Aucune",
- qName:"Quel est votre nom ?", qNameSub:"Utilisez le nom de votre réservation.", namePh:"Nom",
+ qName:"Quel est votre nom ?", qNameSub:"Indiquez votre <b>nom et prénom</b>. Dans un groupe, les prénoms se ressemblent souvent.", namePh:"Nom et prénom",
  qWhen:"Quel jour venez-vous ?", whenToday:"Aujourd'hui", whenTom:"Demain", whenDay:"Après-demain", whenPick:"Choisir une date",
  qMail:"Quelle est votre adresse e-mail ?",
  qMailSub:"<b>Le jour même</b> de votre soin, nous envoyons à cette adresse un guide fait pour votre peau.",
@@ -444,7 +446,7 @@ de:{
  calm2:"Wenn Sie unsicher sind, tippen Sie auf <b>„Weiß ich nicht“</b>. Ihre Haut sehen wir uns selbst an.",
  calm3:"Wählen Sie, was Sie stört. Wenn nichts stört, gehen Sie einfach weiter.",
  dk:"Weiß ich nicht", none:"Nichts davon",
- qName:"Wie heißen Sie?", qNameSub:"Bitte den Namen Ihrer Buchung.", namePh:"Name",
+ qName:"Wie heißen Sie?", qNameSub:"Bitte <b>Vor- und Nachnamen</b> angeben. In Gruppen ähneln sich die Namen oft.", namePh:"Vor- und Nachname",
  qWhen:"Wann kommen Sie?", whenToday:"Heute", whenTom:"Morgen", whenDay:"Übermorgen", whenPick:"Datum wählen",
  qMail:"Wie lautet Ihre E-Mail-Adresse?",
  qMailSub:"<b>Noch am selben Tag</b> senden wir Ihnen an diese Adresse eine Anleitung, die auf Ihre Haut abgestimmt ist.",
@@ -483,7 +485,7 @@ it:{
  calm2:"Se non è sicura, tocchi <b>«Non lo so»</b>. La pelle la guardiamo noi.",
  calm3:"Segni ciò che la preoccupa. Se non c'è nulla, prosegua pure.",
  dk:"Non lo so", none:"Nessuna",
- qName:"Come si chiama?", qNameSub:"Usi il nome della prenotazione.", namePh:"Nome",
+ qName:"Come si chiama?", qNameSub:"Scriva <b>nome e cognome</b>. Nei gruppi i nomi si somigliano spesso.", namePh:"Nome e cognome",
  qWhen:"Quando viene?", whenToday:"Oggi", whenTom:"Domani", whenDay:"Dopodomani", whenPick:"Scegli la data",
  qMail:"Qual è il suo indirizzo e-mail?",
  qMailSub:"<b>Lo stesso giorno</b> del trattamento le inviamo a questo indirizzo una guida pensata per la sua pelle.",
@@ -522,7 +524,7 @@ ar:{
  calm2:"إن لم تكوني متأكدة، اضغطي <b>«لست متأكدة»</b>. نحن من سنفحص بشرتك.",
  calm3:"اختاري ما يزعجك. وإن لم يكن هناك شيء، تابعي ببساطة.",
  dk:"لست متأكدة", none:"لا شيء من هذه",
- qName:"ما اسمك؟", qNameSub:"يرجى استخدام الاسم المدوّن في الحجز.", namePh:"الاسم",
+ qName:"ما اسمك؟", qNameSub:"يرجى كتابة <b>الاسم الأول واسم العائلة</b>. غالبًا ما تتشابه الأسماء في المجموعات.", namePh:"الاسم الكامل",
  qWhen:"متى ستأتين؟", whenToday:"اليوم", whenTom:"غدًا", whenDay:"بعد غد", whenPick:"اختيار التاريخ",
  qMail:"ما هو بريدك الإلكتروني؟",
  qMailSub:"<b>في اليوم نفسه</b> الذي تتلقين فيه الجلسة، نرسل إلى هذا العنوان دليلًا مُعدًّا لبشرتك.",
@@ -561,7 +563,7 @@ he:{
  calm2:"אם את לא בטוחה, לחצי על <b>«אני לא בטוחה»</b>. את העור אנחנו נבדוק בעצמנו.",
  calm3:"סמני מה שמפריע לך. אם שום דבר לא מפריע, אפשר פשוט להמשיך.",
  dk:"אני לא בטוחה", none:"אף אחד מאלה",
- qName:"מה שמך?", qNameSub:"נא להשתמש בשם שבהזמנה.", namePh:"שם",
+ qName:"מה שמך?", qNameSub:"נא לכתוב <b>שם פרטי ושם משפחה</b>. בקבוצות יש הרבה שמות דומים.", namePh:"שם מלא",
  qWhen:"מתי את מגיעה?", whenToday:"היום", whenTom:"מחר", whenDay:"מחרתיים", whenPick:"בחירת תאריך",
  qMail:"מה כתובת האימייל שלך?",
  qMailSub:"<b>עוד באותו יום</b> של הטיפול נשלח לכתובת הזו מדריך שנכתב במיוחד לעור שלך.",
@@ -930,6 +932,7 @@ function showDone(){
       '<h1>'+L.savedT+'</h1>' +
       '<div class="sub" style="margin-top:10px">'+L.savedB+'</div>' +
       '<div class="idbox"><div class="k">'+L.idLabel+'</div>' +
+      '<div class="v4">'+esc(String(doneCaseId).slice(-4))+'</div>' +
       '<div class="v">'+esc(doneCaseId)+'</div>' +
       '<div class="n">'+esc(D.name)+'</div></div>' +
       '<div class="after"><div class="ah">'+L.afterT+'</div><ul>' +
